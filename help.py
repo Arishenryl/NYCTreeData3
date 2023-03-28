@@ -1,10 +1,11 @@
-import sys
-import 
+print ("Welcome to the Welcome to the treequery program. To begin, try typing 'help' for the list of valid commands.")
 
-print "Welcome to the Welcome to the treequery program. To begin, try typing 'help' for the list of valid commands."
+print ("list_trees can help one get a list of common tree names.")
 
-listtrees = input()
-treeinfo = 
-nearby 
-quit
+print ("tree_info can get information about a species of tree. One input argument is required to run the code.")
+
+print ("nearby can get a list of information of all trees within a defined distance from some location. Various input arguments are required to run the code.")
+
+print ("The quit commandb quits the application.")
+
 
