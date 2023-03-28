@@ -22,7 +22,12 @@ def getHelp():
     print ("quit: command quits the application.")
 
 def listTrees():
-    #Part 3 code here
+    part 3
+
+import pandas as pd
+
+species=Tree_data.groupby('spc_common')
+Tree_data.Species.unique().sort()
 def treeInfo():
     #TreeInfo
 #Interactive loop that it is central control for the program
