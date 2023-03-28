@@ -1,4 +1,4 @@
-print ("list_trees can help one get a list of common tree names.")
+print ("list trees" can help one get a list of common tree names.)
 
 print ("tree_info can get information about a species of tree. One input argument is required to run the code.")
 
