@@ -1,4 +1,4 @@
-#Part 1
+
 import sys
 import pandas as pd
 
@@ -8,6 +8,14 @@ file=str(sys.argv[1])
 #Using pandas library to load CSV file into pandas 'DataFrame'
 Tree_data= pd.read_csv(file)
 
+
+#Functions
+def getHelp():
+    #Part 2 code here
+def listTrees():
+    #Part 3 code here
+def treeInfo():
+    #TreeInfo
 #Interactive loop that it is central control for the program
 flag=True
 
