@@ -22,8 +22,7 @@ def getHelp():
     print ("quit: command quits the application.")
 
 def listTrees():
-    species=Tree_data.groupby('spc_common')
-    Tree_data.Species.unique().sort()
+    print(Tree_data['spc_common'].unique())
 def treeInfo():
     pass
     #TreeInfo
@@ -32,17 +31,21 @@ def treeInfo():
 flag=True
 
 while flag:
+    print('** NYC TREE DATA Searcher **')
     userInput=input()
     if (userInput=='help'):
         pass
-        #getHelp() command to display information about each command
+        getHelp() #command to display information about each command
 
     elif (userInput=='listtrees'):
-        #listTrees()
+        listTrees()
+        pass
     elif (userInput=='treeinfo'):
         #treeInfo
+        pass
     elif (userInput=='nearby'):
         #nearby()
+        pass
     elif (userInput=='quit'):
         exit()
     else:
