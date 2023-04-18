@@ -61,3 +61,12 @@ while flag:
         exit()
     else:
         print('Command not understood. Please enter valid command.')
+        
+
+        
+#Species/Borough
+df = pd.read_csv('nyctreedata.csv')
+print(df.columns)
+
+#prints species entry results
+print(results)
