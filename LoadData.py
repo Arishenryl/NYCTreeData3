@@ -23,8 +23,19 @@ def getHelp():
 
 def listTrees():
     print(Tree_data['spc_common'].unique())
-def treeInfo():
-    pass
+def treeInfo(entry):
+    #match the user input string to common species names of trees column.
+    #TreeInfo
+    for x in Tree_data['spc_common'][0:10]:
+        r = re.findall(f"\s{entry}",str(x))
+        print(r)
+        matched_status=bool(r)
+        print("Tree:", x, "match:", matched_status)
+        if matched_status:
+            name=r
+            tree_amount+=1
+            print('Entry:', name)
+            print('Total number of trees:', tree_amount)
     #TreeInfo
     
 #Interactive loop that it is central control for the program
@@ -41,7 +52,7 @@ while flag:
         listTrees()
         pass
     elif (userInput=='treeinfo'):
-        #treeInfo
+        treeInfo(userInput)
         pass
     elif (userInput=='nearby'):
         #nearby()
