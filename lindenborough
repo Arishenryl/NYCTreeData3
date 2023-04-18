@@ -1,3 +1,16 @@
+import sys 
 import pandas as pd
+
 df = pd.read_csv('nyctreedata.csv')
 print(df.columns)
+
+#prints array entry in 4 columns 4 rows
+def printArray(array):
+    col = 4
+    vertical = [lst[i:i+col] for i in range(0,len(lst),col)]
+    for item in vertical:
+    print(item)
+    
+    row = 4
+    for s in range(row):
+    print([lst[s:][i] for i in range(0,len(lst),row)])
