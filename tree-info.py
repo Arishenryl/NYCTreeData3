@@ -21,3 +21,8 @@ while true:
                 results = compute_all_tree_info(data, species_name)
                 if not results:
                     print("No matches found for '{}'".format(species_name))
+                else:
+                    print("Entry: {}".format(species_name))
+                    for result in results:
+                        print("Total number of such trees: {}".format(result['total']))
+                        print("Zip codes in which this tree is found: {}".format(result['zip_codes']))
