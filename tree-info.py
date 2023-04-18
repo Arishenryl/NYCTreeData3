@@ -30,3 +30,12 @@ while true:
 {}".format(result['largest_borough'], result['largest_borough_count']))                
                         print("Average diameter: {:.2f}".format(result['avg_diameter']))
                     overall_results = compute_overall_tree_info(data)
+                    print("Popularity in the city:")
+                    print("{:<16} {:<13} {:<8}".format("Borough", "Count", "%"))
+                    for borough, count, percent in overall_results:
+                        print("{:<16} {:<13,} {:<8.2f}%".format(borough, count, percent))
+                    print('')
+        else:
+             print("Invalid command. Usage: treeinfo <tree_species_names>")
+    else:
+        print("Invalid command. Try typing 'help' for a list of valid commands.") 
