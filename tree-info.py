@@ -26,3 +26,7 @@ while true:
                     for result in results:
                         print("Total number of such trees: {}".format(result['total']))
                         print("Zip codes in which this tree is found: {}".format(result['zip_codes']))
+                        print("Borough containing the largest number of such trees: {}, with
+{}".format(result['largest_borough'], result['largest_borough_count']))                
+                        print("Average diameter: {:.2f}".format(result['avg_diameter']))
+                    overall_results = compute_overall_tree_info(data)
