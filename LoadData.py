@@ -1,13 +1,12 @@
-
 import sys
 import pandas as pd
+import re
 
 #sys.argv contains name of our script (argument 0) and all the arguments
 file=str(sys.argv[1])
 
 #Using pandas library to load CSV file into pandas 'DataFrame'
 Tree_data= pd.read_csv(file)
-
 
 #Functions
 def getHelp():
@@ -22,10 +21,34 @@ def getHelp():
     print ("quit: command quits the application.")
 
 def listTrees():
-    print(Tree_data['spc_common'].unique())
-def treeInfo():
+    print(Tree_data['spc_common'].unique().sorted())
+
+def format_info(matches):
     pass
+def treeInfo2(entry):
+    matched_list=[]
+    for x in Tree_data['spc_common'].unique():
+        if x is entry:
+            matched_list.append(x)
+    
+def formatInfo(matched_trees):
+    #do formatting here
+    pass
+def treeInfo(entry):
+    #match the user input string to common species names of trees column.
     #TreeInfo
+    entry.lower()
+    matched=[]
+    for x in Tree_data['spc_common'].unique(): 
+        TEXT = entry
+        print(x)
+       
+        if (str(x) in TEXT):
+            matched.append(x)
+        else:
+            continue
+    formatInfo(matched)
+       
     
 #Interactive loop that it is central control for the program
 flag=True
@@ -40,8 +63,8 @@ while flag:
     elif (userInput=='listtrees'):
         listTrees()
         pass
-    elif (userInput=='treeinfo'):
-        #treeInfo
+    elif ('treeinfo ' in userInput):
+        treeInfo(userInput)
         pass
     elif (userInput=='nearby'):
         #nearby()
