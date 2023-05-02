@@ -47,18 +47,15 @@ def treeInfo(entry):
         else:
             continue
     formatInfo(matched)
-#Total num. of trees in the city
-    count = 0
+#Total # of specified tree type in the city
+  
+#Total # of trees per borough 
+count = 0
     treeType = a_row[10]
-    for key in treeType:
-        if treeType[spc_common] == 'Tree_data':
-            count +=1
-#Num. of trees per borough 
- for key in treeType:
-        if treeType[borough] == 'Tree_data':
+    treeType["borough"].value_counts()
             count +=1
 #Total per. of trees in the city, borough
-    
+   
 #Interactive loop that it is central control for the program
 flag=True
 
