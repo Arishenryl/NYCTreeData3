@@ -15,4 +15,4 @@ elif command.startswith('nearby'):
      else:
                    print('\nNo trees are present within this distance.\n')
            else:
-               print('\nPlease enter the required arguments to use the nearby command. Use the \'help\' command to learn more details.\n')       
+               print('\nPlease enter the required arguments to use the nearby command. Use the \'help\' command for more details.\n')       
