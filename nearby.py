@@ -1,6 +1,6 @@
 elif command.startswith('nearby'):
   args = command.split(' ')
-  if len(args) == 4;
+  if len(args) == 4:
      lat = float(args[1])
      lon = float(args[2])
      dist = float(args[3])
