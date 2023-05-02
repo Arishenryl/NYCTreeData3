@@ -23,17 +23,17 @@ def getHelp():
 def listTrees():
     print(Tree_data['spc_common'].unique().sorted())
 
-def format_info(matches):
-    pass
-def treeInfo2(entry):
-    matched_list=[]
-    for x in Tree_data['spc_common'].unique():
-        if x is entry:
-            matched_list.append(x)
-    
 def formatInfo(matched_trees):
-    #do formatting here
-    pass
+#below is untested an buggy code. 
+    for x in matched_trees:
+        grouped_zipcode=Tree_data.groupby(['zipcode']).get_group(x)
+        grouped_boro=Tree_data.groupby(['boroname']).get_group(x)
+        boroMax=grouped_boro.max()
+        print(f"Entry: {x}")
+        print(f"Total number of trees: ")
+        print(f"Zip codes in which this tree is found: {grouped_zipcode}")
+        print(f"Borough containing the largest number of trees: {boroMax}")
+  
 def treeInfo(entry):
     #match the user input string to common species names of trees column.
     #TreeInfo
@@ -41,7 +41,6 @@ def treeInfo(entry):
     matched=[]
     for x in Tree_data['spc_common'].unique(): 
         TEXT = entry
-        print(x)
        
         if (str(x) in TEXT):
             matched.append(x)
