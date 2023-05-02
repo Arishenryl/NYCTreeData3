@@ -55,7 +55,7 @@ count = 0
     treeType["borough"].value_counts()
             count +=1
 #Total per. of trees in the city, borough
-   df1['percent'] = (df1['?'] / df1['total_trees'].sum()) * 100
+   df1['percent'] = (df1['borough_trees'] / df1['total_trees'].sum()) * 100
 #Interactive loop that it is central control for the program
 flag=True
 
