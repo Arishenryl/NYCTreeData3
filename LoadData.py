@@ -24,7 +24,7 @@ def listTrees():
     print(Tree_data['spc_common'].unique().sorted())
 
 def formatInfo(matched_trees):
-#below is untested an buggy code. 
+#below is untested and buggy code. 
     for x in matched_trees:
         grouped_zipcode=Tree_data.groupby(['zipcode']).get_group(x)
         grouped_boro=Tree_data.groupby(['boroname']).get_group(x)
