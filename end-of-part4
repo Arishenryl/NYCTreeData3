@@ -10,19 +10,7 @@ file=str(sys.argv[1])
 Tree_data= pd.read_csv(file)
 
 #prompting the user for tree type/species input
-def treeInfo(entry):
-    #match the user input string to common species names of trees column.
-    #TreeInfo
-    entry.lower()
-    matched=[]
-    for x in Tree_data['spc_common'].unique(): 
-        TEXT = entry
-       
-        if (str(x) in TEXT):
-            matched.append(x)
-        else:
-            continue
-    formatInfo(matched)
+df.loc[['spc_common','borough']]
     
     what's left:
     #loc -> all match occurences
