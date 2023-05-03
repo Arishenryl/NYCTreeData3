@@ -1,7 +1,6 @@
 import sys
 import pandas as pd
 import re
-import numpy
 
 #sys.argv contains name of our script (argument 0) and all the arguments
 file=str(sys.argv[1])
