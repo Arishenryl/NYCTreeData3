@@ -10,7 +10,20 @@ file=str(sys.argv[1])
 Tree_data= pd.read_csv(file)
 
 #prompting the user for tree type/species input
-df.loc[['spc_common','borough']]
+user_input = raw_input("Entry: ")
+df.loc[["spc_common","borough"]]
+
+#grouping data by borough
+Tree_data.groupby(["borough","spc_common"]).match()
+grouped_boro = Tree_data.groupby(["borough"])
+for key, item in grouped_boro:
+    print("Key is: " + str(key))
+    print(str(item), "\n\n")
+    
+#counting function?
+df = pd.Tree-data(index=['spc_common', 'borough'],
+     columns=['borough'].sum())
+    df.count(axis='columns')
     
     what's left:
     #loc -> all match occurences
