@@ -25,6 +25,14 @@ df = pd.Tree-data(index=['spc_common', 'borough'],
      columns=['borough'].sum())
     df.count(axis='columns')
     
+#percentages the first one is just a placeholder bc idk how to get the NYC column
+#df['Popularity in the city'] = df.groupby(['NYC'])['total_trees'].transform(lambda x: x/x.sum())
+print(df)
+df['Popularity in the city'] = df.groupby(['borough'])['total_trees'].transform(lambda x: x/x.sum())
+print(df)
+
+
+    
     what's left:
     #loc -> all match occurences
     #group by -> groups data by borough
