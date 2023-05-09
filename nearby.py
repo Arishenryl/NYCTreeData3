@@ -5,7 +5,7 @@ elif command.startswith('nearby'):
      lon = float(args[2])
      dist = float(args[3])
      nearby_trees = get_nearby_trees(trees, lat, lon, dist)
-     if len(nearby_trees) < 0:
+     if len(nearby_trees) > 0:
         unique_trees = get_unique_nearby_trees(nearby_trees)
         frequencies = get_nearby_frequencies(nearby_trees)
         total_trees = get_total_trees(trees)
