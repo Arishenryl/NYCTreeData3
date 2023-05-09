@@ -10,7 +10,7 @@ Tree_data= pd.read_csv(file)
 
 #prompting the user for tree type/species input
 user_input = raw_input("Entry: ")
-df.loc[["spc_common","boroname"]]
+df.loc[:,["spc_common","boroname"]]
 
 #grouping data by borough
 Tree_data.groupby(["boroname","spc_common"]).match()
