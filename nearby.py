@@ -13,6 +13,6 @@ elif command.startswith('nearby'):
             freq = (frequencies[tree] / total_trees['NYC']) * 100
             print('\n' + tree + ': ' + '%.2f' % freq + '%')
      else:
-                   print('\nNo trees are present within this distance.\n')
+                   print('\nNo trees are present within this distance.\n'. )
            else:
                print('\nPlease enter the required arguments to use the nearby command. Use the \'help\' command for more details.\n')       
