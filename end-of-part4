@@ -12,6 +12,20 @@ Tree_data= pd.read_csv(file)
 user_input = raw_input("Entry: ")
 df.loc[:,["spc_common","boroname"]]
 
+def treeInfo(entry):
+    #match the user input string to common species names of trees column.
+    #TreeInfo
+    entry.lower()
+    matched=[]
+    for x in Tree_data['spc_common'].unique(): 
+        TEXT = entry
+       
+        if (str(x) in TEXT):
+            matched.append(x)
+        else:
+            continue
+    formatInfo(matched)
+
 #grouping data by borough
 Tree_data.groupby(["boroname","spc_common"]).match()
 grouped_boro = Tree_data.groupby(["boroname"])
