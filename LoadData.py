@@ -121,3 +121,23 @@ while flag:
         exit()
     else:
         print('Command not understood. Please enter valid command.')
+        
+#Error-Checking
+#Checking for command-line argument
+if len(sys.argv) < 2:
+    print("Error: No filename provided")
+    sys.exit(1)
+
+#Attempt to open the file
+try:
+    with open(sys.argv[1], newline='') as csvfile:
+        # Check if file is a CSV
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        csvfile.seek(0)
+        reader = csv.reader(csvfile, dialect)
+except FileNotFoundError:
+    print("Error: File not found")
+    sys.exit(1)
+except csv.Error:
+    print("Error: File is not in CSV format")
+    sys.exit(1)
