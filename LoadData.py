@@ -74,6 +74,13 @@ math.sin(dLon/2) * math.sin(dLon/2)
    d = R * c # Distance in km
    return d
 
+#function to get the average diameter of a certain tree species.
+def get_average_diameter(trees):
+   total_diameter = 0
+   for tree in trees:
+       total_diameter += float(tree['diameter'])
+   return total_diameter / len(trees)
+
 def frequencies(trees,boroughs):
     freq = {
         'NYC':0,
