@@ -1,12 +1,15 @@
+
 import sys
 import pandas as pd
 import re
+from math import radians, cos, sin, sqrt
 
 #sys.argv contains name of our script (argument 0) and all the arguments
 file=str(sys.argv[1])
 
 #Using pandas library to load CSV file into pandas 'DataFrame'
 Tree_data= pd.read_csv(file)
+tree_list= Tree_data.groupby('spc_common')
 
 #Functions
 def getHelp():
@@ -23,41 +26,60 @@ def getHelp():
 def listTrees():
     print(Tree_data['spc_common'].unique().sorted())
 
+def format_info(matches):
+    pass
+def treeInfo2(entry): 
+    matched_list=[]
+    for x in Tree_data['spc_common'].unique():
+        if x is entry:
+            matched_list.append(x)
+    
 def formatInfo(matched_trees):
-#below is untested and buggy code. 
     for x in matched_trees:
-        grouped_zipcode=Tree_data.groupby(['zipcode']).get_group(x)
-        grouped_boro=Tree_data.groupby(['boroname']).get_group(x)
-        boroMax=grouped_boro.max()
         print(f"Entry: {x}")
-        print(f"Total number of trees: ")
-        print(f"Zip codes in which this tree is found: {grouped_zipcode}")
-        print(f"Borough containing the largest number of trees: {boroMax}")
-  
+        total=0
+        for tree in Tree_data['spc_common']:
+            if x==tree:
+                total+=1
+        print(f"Total number of trees:{total} ")
+    
+        #NEED to print percentage of matched tree of all trees in NYC. Also print percentages corresponding to each borough.
+      
+            
 def treeInfo(entry):
+    boros=['NYC','Manhattan', 'Queens', 'Bronx','Brooklyn','Staten Island']
     #match the user input string to common species names of trees column.
     #TreeInfo
     entry.lower()
     matched=[]
     for x in Tree_data['spc_common'].unique(): 
         TEXT = entry
+        print(x)
        
         if (str(x) in TEXT):
             matched.append(x)
         else:
             continue
-    formatInfo(matched)
-#Total # of specified tree type in the city
-  
-#Total # of trees per borough 
-count = 0
-    treeType = a_row[10]
-    treeType["borough"].value_counts()
-            count +=1
-#Total per. of trees in the city
+    freqa=freq(matched, boros)
 
-#Total per. of trees by borough
-   df1['percent'] = (df1['borough_trees'] / df1['total_trees'].sum()) * 100
+def frequencies(trees,boroughs):
+    freq = {
+        'NYC':0,
+        'Manhattan':0,
+        'Queens':0,
+        'Bronx':0,
+        'Staten Island':0,
+        'Brooklyn':0,
+    }      
+    for each in trees:
+        freq['NYC']+=1
+        if each['borough'] in boroughs:
+            freq[each['borough']] +=1
+    return freq
+
+def nearby(input):
+    pass
+    
 #Interactive loop that it is central control for the program
 flag=True
 
@@ -65,7 +87,6 @@ while flag:
     print('** NYC TREE DATA Searcher **')
     userInput=input()
     if (userInput=='help'):
-        pass
         getHelp() #command to display information about each command
 
     elif (userInput=='listtrees'):
