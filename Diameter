@@ -1,7 +1,0 @@
-import math 
-#function to get the average diameter of a certain tree species.
-def get_average_diameter(trees):
-   total_diameter = 0
-   for tree in trees:
-       total_diameter += float(tree['diameter'])
-   return total_diameter / len(trees)
