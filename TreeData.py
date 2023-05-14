@@ -4,7 +4,7 @@ import math
 import sys
 
 
-# A helper function to get the frequencies of each tree species
+# A function to get frequencies of the trees.
 # in each borough.
 def get_frequencies(trees, boroughs):
    frequencies = {
@@ -20,7 +20,7 @@ def get_frequencies(trees, boroughs):
        if tree['borough'] in boroughs:
            frequencies[tree['borough']] += 1
    return frequencies
-# A helper function to get the total number of trees in each borough.
+# A function to get the total number of trees in each borough.
 def get_total_trees(trees):
    totals = {
        'NYC': 0,
@@ -42,10 +42,9 @@ def get_zip_codes(trees):
        if tree['postcode'] not in zip_codes:
            zip_codes.append(tree['postcode'])
    return zip_codes
-# A helper function to get the average diameter of a certain tree species.
 
-# A helper function to compute the distance between two points
-# given their latitude and longitude.
+# Calculation function to compute the distance between two points
+# given their latitude and longitude. Uses math library.
 def haversine(lat1, lon1, lat2, lon2):
    R = 6371 # Radius of the earth in km
    dLat = math.radians(lat2 - lat1)
@@ -63,28 +62,28 @@ def get_largest_borough(frequencies):
            largest_freq = frequencies[borough]
            largest_borough = borough
    return (largest_borough, largest_freq)
-# A helper function to get the tree species that match the user's input.
+# A function to match the tree species to the user's input.
 def get_matching_species(trees, name):
    matching_trees = []
    for tree in trees:
        if name.lower() in tree['spc_common'].lower():
            matching_trees.append(tree)
    return matching_trees
-# A helper function to get all trees within a certain distance from a certain location.
+#Function to get all trees within a certain distance from a certain location.
 def get_nearby_trees(trees, lat, lon, dist):
    nearby_trees = []
    for tree in trees:
        if haversine(float(tree['latitude']), float(tree['longitude']), lat, lon) <= dist:
            nearby_trees.append(tree)
    return nearby_trees
-# A helper function to get the unique tree species within a certain distance from a certain location.
+#Function to get the unique tree species within a certain distance from a certain location.
 def get_unique_nearby_trees(trees):
    unique_trees = []
    for tree in trees:
        if tree['spc_common'] not in unique_trees:
            unique_trees.append(tree['spc_common'])
    return unique_trees
-# A helper function to get the frequency of each tree species within a certain distance from a certain location.
+#Function to get the frequency of each tree species within a certain distance from a certain location.
 def get_nearby_frequencies(trees):
    frequencies = {}
    for tree in trees:
@@ -95,19 +94,30 @@ def get_nearby_frequencies(trees):
    return frequencies
 # Main function.
 def main():
-   # File name should be the first and only argument.
-   filename = sys.argv[1]
-   # Read the data from the CSV file.
-   trees = []
-   with open(filename) as csv_file:
-       csv_reader = csv.DictReader(csv_file)
-       for row in csv_reader:
-           trees.append(row)
+    trees = []
+   
+#ERROR CHECKING
+    if len(sys.argv) < 2:
+        print("Error: No filename provided")
+        sys.exit(1)
+
+    #Attempt to open the file
+    try:
+        with open(sys.argv[1], newline='') as csvfile:
+            # Check if file is a CSV
+            csv_reader = csv.DictReader(sys.argv[1])
+            for row in csv_reader:
+                trees.append(row)
+    except FileNotFoundError:
+        print("Error: File not found or is not a CSV file.")
+        sys.exit(1)
+    
+    
    # Welcome message.
-   print('Welcome to the treequery program.')
-   print('To begin, try typing \'help\' for the list of valid commands.')
-   # Interactive loop.
-   while True:
+    print('Welcome to the treequery program.')
+    print('To begin, try typing \'help\' for the list of valid commands.')
+    # Interactive loop.
+    while True:
        command = input('\nEnter a command: ')
        # Help command.
        if command == 'help':
@@ -117,7 +127,8 @@ def main():
            print('nearby <latitude> <longitude> <distance> - Get a list of information of all trees within a defined distance from some location')
            print('help - Get a help page about each command')
            print('quit - Quit the application')
-       # List trees command.
+            
+       #List trees command.
        elif command == 'listtrees':
            unique_trees = []
            for tree in trees:
@@ -125,6 +136,7 @@ def main():
                    unique_trees.append(tree['spc_common'])
            unique_trees.sort()
            print('\n' + '\n'.join(unique_trees) + '\n')
+            
        # Tree info command.
        elif command.startswith('treeinfo'):
            boroughs=['Manhattan', 'Bronx', 'Brooklyn','Queens','Staten Island']
