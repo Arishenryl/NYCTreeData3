@@ -1,203 +1,197 @@
-import sys
+#!/usr/bin/env python3
 import csv
 import math
-
-def getHelp():
-    
-#beginning of help command file; basically a "man" page
-    print ("listtrees: can help one get a list of common tree names.")
-#treeinfo command help file description
-    print ("treeinfo: can get information about a species of tree. One input argument is required to run the code.")
-#nearby command help  file description 
-    print ("nearby: can get a list of information of all trees within a defined distance from some location. Various input arguments are required to run the code.")
-#how to quit the help command application
-    print ("quit: command quits the application.")
+import sys
 
 
+# A helper function to get the frequencies of each tree species
+# in each borough.
+def get_frequencies(trees, boroughs):
+   frequencies = {
+       'NYC': 0,
+       'Manhattan': 0,
+       'Bronx': 0,
+       'Brooklyn': 0,
+       'Queens': 0,
+       'Staten Island': 0
+   }
+   for tree in trees:
+       frequencies['NYC'] += 1
+       if tree['borough'] in boroughs:
+           frequencies[tree['borough']] += 1
+   return frequencies
+# A helper function to get the total number of trees in each borough.
+def get_total_trees(trees):
+   totals = {
+       'NYC': 0,
+       'Manhattan': 0,
+       'Bronx': 0,
+       'Brooklyn': 0,
+       'Queens': 0,
+       'Staten Island': 0
+   }
+   for tree in trees:
+       totals['NYC'] += 1
+       if tree['borough'] in totals:
+           totals[tree['borough']] += 1
+   return totals
+# A helper function to get the zip codes in which a certain tree species can be found.
+def get_zip_codes(trees):
+   zip_codes = []
+   for tree in trees:
+       if tree['postcode'] not in zip_codes:
+           zip_codes.append(tree['postcode'])
+   return zip_codes
+# A helper function to get the average diameter of a certain tree species.
 
-def haversine(lat1,lon1,lat2,lon2):
-    Earth_radius = 6371
-    dLat = math.radians(lat2 - lat1)
-    dLon = math.radians(lon2 - lon1)
-    a = math.sin(dLat/2) * math.sin(dLat/2) + math.cos(math.radians(lat1))*math.cos(math.radians(lat2)) * math.sin(dLon/2) * math.sin(dLon/2)
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-    distance = Earth_radius * c  #Distance
-    return distance
-
-#Function for getting amount of trees in each borough
-
-def totals(trees):
-    #TOTALS
-    total_counts = {
-        'NYC':0,
-        'Manhattan':0,
-        'Queens':0,
-        'Bronx':0,
-        'Staten Island':0,
-        'Brooklyn':0,
-    } 
-    for each in trees:
-        total_counts['NYC'] += 1
-        if each['borough'] in total_counts:
-            total_counts[each['borough']] += 1
-    return totals
-
-def frequencies(trees,boroughs):
-    freq = {
-        'NYC':0,
-        'Manhattan':0,
-        'Queens':0,
-        'Bronx':0,
-        'Staten Island':0,
-        'Brooklyn':0,
-    }      
-    for each in trees:
-        freq['NYC']+=1
-        if each['borough'] in boroughs:
-            freq[each['borough']] +=1
-    return freq
-
-# A function for getting te zip codes in which a certain tree species can be found.
-
-def get_zipcodes(trees):
-    zip_list=[]
-    for tree in trees:
-        if tree['zip_city'] not in zip_list:
-            zip_list.append(tree['zip_city'])
-        
-    return zip_list
-
-#Get average diameter of a certain tree species
-
-def find_avgDiameter(trees):
-    sum=0
-    for tree in trees:
-        sum+=float(tree['diameter'])
-
-    return sum/len(trees)
-
-#A function to get the borough which contains the largest number of a ceratin tree
-def top_boro(frequencies):
-    top_boro= None
-    top_freq= 0
-    for borough in frequencies:
-        if frequencies[borough] > top_freq:
-            top_freq=frequencies[borough]
-            top_boro=borough
-        return (top_boro,top_freq)
-
-#A function to identify the trees that match to the user inputted string.
-def MatchInput(trees, name):
-    matched=[]
-    for tree in trees:
-        if name.lower() in tree['spc_common'].lower():
-            matched.append(tree)
-    
-    return matched
-
-#A function to get all trees within a certain distance from a certain location.
-
-def find_nearby(trees, lat,lon, dist):
-    trees_nearby = []
-    for tree in trees:
-        if haversine(float(tree['latitude']),float(tree['longitude']),lat,lon)<=dist:
-            trees_nearby.append(tree)
-    return trees_nearby
-
-#A helper function to get the UNIQUE LIST OF species within a certain distance from a certain location.
-
-def find_unique_nearby(trees):
-    unique_trees=[]
-    for tree in trees:
-        if tree['spc_common'] not in unique_trees:
-            unique_trees.append(tree['spc_common'])
-    return unique_trees
-
-def find_nearby_freqs(trees):
-    frequencies={}
-    for tree in trees:
-        if tree['spc_common'] in frequencies:
-            frequencies[tree['spc_common']]+=1
-        else:
-            frequencies[tree['spc_common']]+=1
-    return frequencies
-
+# A helper function to compute the distance between two points
+# given their latitude and longitude.
+def haversine(lat1, lon1, lat2, lon2):
+   R = 6371 # Radius of the earth in km
+   dLat = math.radians(lat2 - lat1)
+   dLon = math.radians(lon2 - lon1)
+   a = math.sin(dLat/2) * math.sin(dLat/2) + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dLon/2) * math.sin(dLon/2)
+   c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+   d = R * c # Distance in km
+   return d
+# A helper function to get the borough containing the largest number of a certain tree species.
+def get_largest_borough(frequencies):
+   largest_borough = None
+   largest_freq = 0
+   for borough in frequencies:
+       if frequencies[borough] > largest_freq and borough!='NYC':
+           largest_freq = frequencies[borough]
+           largest_borough = borough
+   return (largest_borough, largest_freq)
+# A helper function to get the tree species that match the user's input.
+def get_matching_species(trees, name):
+   matching_trees = []
+   for tree in trees:
+       if name.lower() in tree['spc_common'].lower():
+           matching_trees.append(tree)
+   return matching_trees
+# A helper function to get all trees within a certain distance from a certain location.
+def get_nearby_trees(trees, lat, lon, dist):
+   nearby_trees = []
+   for tree in trees:
+       if haversine(float(tree['latitude']), float(tree['longitude']), lat, lon) <= dist:
+           nearby_trees.append(tree)
+   return nearby_trees
+# A helper function to get the unique tree species within a certain distance from a certain location.
+def get_unique_nearby_trees(trees):
+   unique_trees = []
+   for tree in trees:
+       if tree['spc_common'] not in unique_trees:
+           unique_trees.append(tree['spc_common'])
+   return unique_trees
+# A helper function to get the frequency of each tree species within a certain distance from a certain location.
+def get_nearby_frequencies(trees):
+   frequencies = {}
+   for tree in trees:
+       if tree['spc_common'] in frequencies:
+           frequencies[tree['spc_common']] += 1
+       else:
+           frequencies[tree['spc_common']] = 1
+   return frequencies
+# Main function.
 def main():
-    #Take commad line argument
-    file = sys.argv[1]
-    #Create trees list --> Use pandas read_csv() to read every row into the 'trees' list.
-    trees=[]
-    with open(file) as csv_file:
-        csv_reader= csv.DictReader(csv_file)
-        for row in csv_reader:
-            trees.append(row)
-    
-    print("#########################\nNYC TREE DATA SEARCH\n#########################")
-    flag=True
-    while flag:
-        command=input('Enter a command:')
-        if (command=='help'):
-            getHelp() #command to display information about each command
+   # File name should be the first and only argument.
+   filename = sys.argv[1]
+   # Read the data from the CSV file.
+   trees = []
+   with open(filename) as csv_file:
+       csv_reader = csv.DictReader(csv_file)
+       for row in csv_reader:
+           trees.append(row)
+   # Welcome message.
+   print('Welcome to the treequery program.')
+   print('To begin, try typing \'help\' for the list of valid commands.')
+   # Interactive loop.
+   while True:
+       command = input('\nEnter a command: ')
+       # Help command.
+       if command == 'help':
+           print('\nThe valid commands are as follows:')
+           print('listtrees - Get a list of common tree names')
+           print('treeinfo <tree_species_name> - Get information about a species of tree')
+           print('nearby <latitude> <longitude> <distance> - Get a list of information of all trees within a defined distance from some location')
+           print('help - Get a help page about each command')
+           print('quit - Quit the application')
+       # List trees command.
+       elif command == 'listtrees':
+           unique_trees = []
+           for tree in trees:
+               if tree['spc_common'] not in unique_trees:
+                   unique_trees.append(tree['spc_common'])
+           unique_trees.sort()
+           print('\n' + '\n'.join(unique_trees) + '\n')
+       # Tree info command.
+       elif command.startswith('treeinfo'):
+           boroughs=['Manhattan', 'Bronx', 'Brooklyn','Queens','Staten Island']
+           name = command.split(' ')[1]
+           matching_trees = get_matching_species(trees, name)
+           if len(matching_trees) > 0:
+               total_num = len(matching_trees)
+               zip_codes = get_zip_codes(matching_trees)
+               borough= get_largest_borough(get_frequencies(matching_trees, boroughs))
+            
+               print('\nEntry: ' + name)
+               print('Total number of such trees: ' + str(total_num))
+               print('Zip codes in which this tree is found: ' + ', '.join(zip_codes))
+               print('borough containing the largest number of such trees: ' + borough[0] + ', with ' + str(borough[1]))
 
-        elif (command=='listtrees'):
-            unique_trees=[]
-            for tree in trees:
-                if tree['spc_common'] not in unique_trees:
-                    unique_trees.append(tree['spc_common'])
-            unique_trees.sort()
-            print(unique_trees)
+               print('Popularity in NYC:')
+               frequencies= get_frequencies(trees, boroughs)
+               totals= get_total_trees(trees)
+               #Get the value from the frequencies, and then divide by the total and *100
 
-        elif (command.startswith('treeinfo')):
-            name = command.split(" ")[1]
-            matched=MatchInput(trees, name)
-            if len(matched)>0:
-                total=len(matched)
-                zipcodes= get_zipcodes(matched)
-                boroughs = top_boro(frequencies(matched, boroughs))
-                avg_diameter= find_avgDiameter(matched)
-
-
-                #Code to output the info to the display ( in the console )
-                print('\nENTRY:',name)
-                print('\nTOTAL # of matched trees:',str(total))
-                print('\nZIP CODES in which the tree can be found:'+ ','.join(zipcodes))
-                print('\nBOROUGH containing largest number of trees:', boroughs[0], 'with', boroughs[1])
-                print(f'\nAverage diameter: {round(avg_diameter,2)}')
-            else:
-                print('\nNO MATCHES FOUND :(')
-
-
-        elif (command.startswith('nearby')):
-            args = command.split(' ')
-            if len(args)==4:
-                lat = float(args[1])
-                lon = float(args[2])
-                dist =float(args[3])
-                nearby=find_nearby(trees,lat,lon,dist)
-                if len(nearby)>0:
-                    unique_trees=find_unique_nearby(trees, lat,lon,dist)
-                    freqs=find_nearby_freqs(nearby)
-                    total_trees=totals(trees)
-                    for tree in unique_trees:
-                        frequency=(frequencies[tree]/total_trees['NYC'] * 100)
-
-                        print('\nTree:', round(frequency,2))
-                else:
-                    print('No trees are present this area.')
-            else:
-                print('You typed something wrong or something is missing. Please try again. Type help for details.')
-        
-        elif (command.lower() == 'quit' or 'stop'):
-            print('Exiting program...')
-            exit()
-        else:
-            print('\nINVALID COMMAND. Try again or try help page by typing: help')
+               frequencies = {
+                    'NYC': 0,
+                    'Manhattan': 0,
+                    'Bronx': 0,
+                    'Brooklyn': 0,
+                    'Queens': 0,
+                    'Staten Island': 0
+                }
+               
+               for borough in boroughs:
+                  tree_count=0
+                  total=0
+                  for tree in trees:
+                      if tree['borough']==borough:
+                          tree_count+=1
+                      else:
+                          total+=1
+                  print(f"{borough}:{tree_count}({total}) {round(tree_count/total*100)}%")
+                    
+                    
+           else:
+               print('\nNo matching species found.\n')
+       # Nearby command.
+       elif command.startswith('nearby'):
+           args = command.split(' ')
+           if len(args) == 4:
+               lat = float(args[1])
+               lon = float(args[2])
+               dist = float(args[3])
+               nearby_trees = get_nearby_trees(trees, lat, lon, dist)
+               if len(nearby_trees) > 0:
+                   unique_trees = get_unique_nearby_trees(nearby_trees)
+                   frequencies = get_nearby_frequencies(nearby_trees)
+                   total_trees = get_total_trees(trees)
+                   for tree in unique_trees:
+                       freq = (frequencies[tree] / total_trees['NYC']) * 100
+                       print('\n' + tree + ': ' + '%.2f' % freq + '%')
+               else:
+                   print('\nNo trees are present within this distance.\n')
+           else:
+               print('\nPlease enter the required arguments to use the nearby command. Use the \'help\' command to learn more details.\n')
+       # Quit command.
+       elif command == 'quit':
+           print('\nGoodbye!\n')
+           break
+       # Invalid command.
+       else:
+           print('\nInvalid command. Please try again.\n')
 if __name__ == '__main__':
-    main()
-
-
-
-
-
-        
-  
+   main()
