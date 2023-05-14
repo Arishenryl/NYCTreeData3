@@ -1,8 +1,0 @@
-import sys 
-import pandas as pd
-
-df = pd.read_csv('nyctreedata.csv')
-print(df.columns)
-
-#prints species entry results
-print(results)
