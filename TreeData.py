@@ -1,3 +1,8 @@
+#NYC Tree Census Data 2015
+#author @Liann Aris-Henry, @Aida Lita, @Gabriel Stewart-Guido
+#To answer specific questions end-users may have about the NYC tree data by uti>
+#date May 14th 2023
+#Version #2 (file-reader error fixed and debugged)
 #!/usr/bin/env python3
 import csv
 import math
