@@ -105,7 +105,7 @@ def main():
     try:
         with open(sys.argv[1], newline='') as csvfile:
             # Check if file is a CSV
-            csv_reader = csv.DictReader(sys.argv[1])
+            csv_reader = csv.DictReader(csvfile)
             for row in csv_reader:
                 trees.append(row)
     except FileNotFoundError:
