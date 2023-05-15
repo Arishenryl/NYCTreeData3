@@ -48,6 +48,14 @@ def get_zip_codes(trees):
            zip_codes.append(tree['postcode'])
    return zip_codes
 
+#get stump diam
+def findAvgStumpDiam(trees):
+    total=0
+    for tree in trees:
+        total += float(tree['stump_diam'])
+    return round(total/len(trees),2)
+
+
 # Calculation function to compute the distance between two points
 # given their latitude and longitude. Uses math library.
 def haversine(lat1, lon1, lat2, lon2):
@@ -151,26 +159,19 @@ def main():
                total_num = len(matching_trees)
                zip_codes = get_zip_codes(matching_trees)
                borough= get_largest_borough(get_frequencies(matching_trees, boroughs))
+               avg_diam= findAvgStumpDiam(trees)
             
                print('\nEntry: ' + name)
                print('Total number of such trees: ' + str(total_num))
                print('Zip codes in which this tree is found: ' + ', '.join(zip_codes))
                print('borough containing the largest number of such trees: ' + borough[0] + ', with ' + str(borough[1]))
+               print(f'Average diameter: {avg_diam}')
 
                print('Popularity in NYC:')
                frequencies= get_frequencies(trees, boroughs)
                totals= get_total_trees(trees)
                #Get the value from the frequencies, and then divide by the total and *100
 
-               frequencies = {
-                    'NYC': 0,
-                    'Manhattan': 0,
-                    'Bronx': 0,
-                    'Brooklyn': 0,
-                    'Queens': 0,
-                    'Staten Island': 0
-                }
-               
                for borough in boroughs:
                   tree_count=0
                   total=0
